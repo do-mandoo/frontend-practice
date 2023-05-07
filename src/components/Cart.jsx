@@ -1,6 +1,22 @@
-import { Box, Button } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CardActionArea,
+  CardActions,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  IconButton,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import products from './Products';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -31,11 +47,11 @@ const Cart = () => {
   // };
 
   // 장바구니 아이템 추가 함수
-  const addItem = async e => {
-    const newItem = e.target.previousElementSibling.textContent;
-    console.log(newItem);
+  const addItem = async productName => {
+    // const newItem = e.target.previousElementSibling.textContent;
+    // console.log(newItem);
     try {
-      const res = await axios.post('http://localhost:5000/postItems', { name: newItem });
+      const res = await axios.post('http://localhost:5000/postItems', { name: productName });
       console.log(res, 'res');
       fetchItem();
       setCartItems([...cartItems, res.data]);
@@ -53,7 +69,7 @@ const Cart = () => {
       // 배열 복사
       const updatedItems = [...cartItems];
       // 삭제할 아이템id의 index추출
-      const indexFind = updatedItems.findIndex((item, i) => item._id === itemId);
+      const indexFind = updatedItems.findIndex(item => item._id === itemId);
       console.log(indexFind, 'indexFind');
       // 추출한 index로 배열의splice를하여 아이템 삭제
       updatedItems.splice(indexFind, 1);
@@ -87,135 +103,68 @@ const Cart = () => {
   };
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', mb: '50px' }}>
-        <Box
-          sx={{
-            bgcolor: '#aaa',
-            // border: '5px solid skyblue',
-            borderRadius: '10px',
-            padding: '4px',
-            width: '160px',
-            marginRight: '5px',
-          }}
-        >
-          <Box sx={{ fontSize: '40px', fontWeight: 'bold', color: '#fff', marginBottom: '5px' }}>
-            fff
-          </Box>
-          <Button
-            sx={{
-              fontWeight: 'bold',
-              fontSize: '18px',
-              color: '#000',
-              '&:hover': { color: 'blue' },
-            }}
-            onClick={e => addItem(e)}
-          >
-            추가
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: '#aaa',
-            // border: '5px solid skyblue',
-            borderRadius: '10px',
-            padding: '4px',
-            width: '160px',
-            marginRight: '5px',
-          }}
-        >
-          <Box sx={{ fontSize: '40px', fontWeight: 'bold', color: '#fff', marginBottom: '5px' }}>
-            ggg
-          </Box>
-          <Button
-            sx={{
-              fontWeight: 'bold',
-              fontSize: '18px',
-              color: '#000',
-              '&:hover': { color: 'blue' },
-            }}
-            onClick={e => addItem(e)}
-          >
-            추가
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: '#aaa',
-            // border: '5px solid skyblue',
-            borderRadius: '10px',
-            padding: '4px',
-            width: '160px',
-            marginRight: '5px',
-          }}
-        >
-          <Box sx={{ fontSize: '40px', fontWeight: 'bold', color: '#fff', marginBottom: '5px' }}>
-            hhh
-          </Box>
-          <Button
-            sx={{
-              fontWeight: 'bold',
-              fontSize: '18px',
-              color: '#000',
-              '&:hover': { color: 'blue' },
-            }}
-            onClick={e => addItem(e)}
-          >
-            추가
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: '#aaa',
-            // border: '5px solid skyblue',
-            borderRadius: '10px',
-            padding: '4px',
-            width: '160px',
-            marginRight: '5px',
-          }}
-        >
-          <Box sx={{ fontSize: '40px', fontWeight: 'bold', color: '#fff', marginBottom: '5px' }}>
-            WWW
-          </Box>
-          <Button
-            sx={{
-              fontWeight: 'bold',
-              fontSize: '18px',
-              color: '#000',
-              '&:hover': { color: 'blue' },
-            }}
-            onClick={e => addItem(e)}
-          >
-            추가
-          </Button>
-        </Box>
+    <Box
+      sx={
+        {
+          // display: 'flex',
+          // flexFlow: 'column nowrap',
+          // justifyContent: 'space-between',
+          // height: '900px',
+          // padding: '10px',
+          // bgcolor: 'rgb(178, 79, 126)',
+        }
+      }
+    >
+      <Box sx={{ display: 'flex', mb: '40px' }}>
+        {products.map(product => {
+          return (
+            <Card key={product._id} sx={{ maxWidth: 345, mr: '10px' }}>
+              <CardActionArea>
+                <CardMedia
+                  component='img'
+                  height='140'
+                  image={product.image}
+                  alt='pengsoo-flowes'
+                />
+                <CardContent>
+                  <Typography component='div' gutterBottom variant='h5'>
+                    {product.name}
+                  </Typography>
+                  <Typography variant='body2'>{product.description}</Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Button onClick={() => addItem(product.name)}>추가</Button>
+              </CardActions>
+            </Card>
+          );
+        })}
       </Box>
+
       {/* 리스트 영역 */}
-      <Box sx={{ display: 'flex', flexFlow: 'column nowrap' }}>
+      <List sx={{ bgcolor: '#fff', minWidth: 650 }}>
         {cartItems.map((item, index) => (
-          <Box
+          <ListItem
             sx={{
               display: 'flex',
-              justifyContent: 'space-between',
               borderBottom: '1px solid #000',
             }}
             key={index}
+            secondaryAction={
+              <IconButton edge='end' aria-label='delete' onClick={() => removeItem(item._id)}>
+                <DeleteIcon />
+              </IconButton>
+            }
           >
-            <Box sx={{ flex: 3, bgcolor: 'pink' }}>{item.name}</Box>
-            <Box sx={{ display: 'flex', bgcolor: 'yellowgreen' }}>
-              <Button onClick={() => decreaseNum(item._id)}>감소</Button>
+            <ListItemText sx={{}}>{item.name}</ListItemText>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <ListItemButton onClick={() => decreaseNum(item._id)}>감소</ListItemButton>
               <Box>{item.quantity}</Box>
-              <Button onClick={() => increaseNum(item._id)}>증가</Button>
+              <ListItemButton onClick={() => increaseNum(item._id)}>증가</ListItemButton>
             </Box>
-            <Button
-              sx={{ flex: 1, bgcolor: 'skyblue', '&:hover': { color: 'red' } }}
-              onClick={() => removeItem(item._id)}
-            >
-              삭제
-            </Button>
-          </Box>
+          </ListItem>
         ))}
-      </Box>
+      </List>
     </Box>
   );
 };
