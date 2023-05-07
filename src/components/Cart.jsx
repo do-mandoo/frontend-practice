@@ -12,6 +12,7 @@ import {
   ListItemText,
   ListItemButton,
   IconButton,
+  Divider,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
@@ -115,6 +116,11 @@ const Cart = () => {
         }
       }
     >
+      <Box>
+        <Typography variant='h3' sx={{ fontWeight: 'bold', color: 'rgb(178, 79, 126)' }}>
+          Product Item
+        </Typography>
+      </Box>
       <Box sx={{ display: 'flex', mb: '40px' }}>
         {products.map(product => {
           return (
@@ -140,7 +146,15 @@ const Cart = () => {
           );
         })}
       </Box>
-
+      <Divider />
+      <Box>
+        <Typography
+          variant='h3'
+          sx={{ fontWeight: 'bold', color: 'rgb(178, 79, 126)', mt: '20px' }}
+        >
+          Cart Item
+        </Typography>
+      </Box>
       {/* 리스트 영역 */}
       <List sx={{ bgcolor: '#fff', minWidth: 650 }}>
         {cartItems.map((item, index) => (
