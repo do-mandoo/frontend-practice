@@ -17,9 +17,9 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import products from './Products';
+import products from '../components/Products';
 
-const Cart = () => {
+const CartForm = () => {
   const [cartItems, setCartItems] = useState([]);
   // const [newItem, setNewItem] = useState({
   //   name: '',
@@ -117,7 +117,10 @@ const Cart = () => {
       }
     >
       <Box>
-        <Typography variant='h3' sx={{ fontWeight: 'bold', color: 'rgb(178, 79, 126)' }}>
+        <Typography
+          variant='h3'
+          sx={{ color: 'rgb(178, 79, 126)', fontFamily: 'Ubuntu', fontWeight: 700 }}
+        >
           Product Item
         </Typography>
       </Box>
@@ -150,7 +153,12 @@ const Cart = () => {
       <Box>
         <Typography
           variant='h3'
-          sx={{ fontWeight: 'bold', color: 'rgb(178, 79, 126)', mt: '20px' }}
+          sx={{
+            color: 'rgb(178, 79, 126)',
+            mt: '20px',
+            fontFamily: 'Ubuntu',
+            fontWeight: 700,
+          }}
         >
           Cart Item
         </Typography>
@@ -183,4 +191,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default CartForm;

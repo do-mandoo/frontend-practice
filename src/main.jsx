@@ -7,6 +7,7 @@ import Home from './pages/Home.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import SignupForm from './pages/Signup.jsx';
 import LoginForm from './pages/Login.jsx';
+import CartForm from './pages/Cart.jsx';
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: '/home',
+    path: '/',
     element: <Home />,
   },
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     element: <SignupForm />,
   },
   { path: '/login', element: <LoginForm /> },
+  { path: '/cart', element: <CartForm /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
