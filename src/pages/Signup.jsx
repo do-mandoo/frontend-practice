@@ -1,7 +1,10 @@
 import { Box, Typography, Button, Grid, TextField, Container } from '@mui/material';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-function SignupForm() {
+import { Link, useNavigate } from 'react-router-dom';
+
+const SignupForm = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -19,13 +22,13 @@ function SignupForm() {
         password: data.get('password'),
       });
 
-      // TODO: response에 200이면,
       console.log(res, '회원가입 성공');
-      // if (response.ok) {
-      //   console.log('회원가입 성공');
-      // } else {
-      //   console.error('회원가입 실패');
-      // }
+      if (res.status === 201 || res.data.success === true) {
+        console.log('회원가입 성공');
+        navigate('/login');
+      } else {
+        console.error('회원가입 실패');
+      }
     } catch (error) {
       console.error('서버 오류:', error);
     }
@@ -97,13 +100,13 @@ function SignupForm() {
         <Grid container justifyContent='flex-end'>
           <Grid item>
             <Link to='/login' variant='body2'>
-              Already have an account? Log in
+              Already have an account? Login
             </Link>
           </Grid>
         </Grid>
       </Box>
     </Container>
   );
-}
+};
 
 export default SignupForm;
