@@ -2,6 +2,7 @@ import { Box, Typography, Button, Container, TextField, Grid } from '@mui/materi
 import axios from 'axios';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -44,7 +45,8 @@ const LoginForm = () => {
   };
 
   return (
-    <>
+    <Box sx={{ width: '100vw', height: '100vh', margin: '0 auto' }}>
+      <Header />
       <Container component='main' maxWidth='xs'>
         <Box
           sx={{
@@ -100,7 +102,7 @@ const LoginForm = () => {
           </Box>
         </Box>
       </Container>
-    </>
+    </Box>
   );
 };
 

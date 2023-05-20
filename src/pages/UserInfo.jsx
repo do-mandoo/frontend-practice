@@ -2,14 +2,19 @@ import { Box, Container, TextField, Typography, Button } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import Header from './Header';
 
 const UserInfo = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log(id, 'id??');
 
   useEffect(() => {
     const fetchGetUser = async () => {
@@ -17,7 +22,7 @@ const UserInfo = () => {
         const res = await axios.get(`http://localhost:5000/profile/${id}`);
         const data = res.data;
         setEmail(data.email);
-        // setPassword(data.password);
+        setPassword(data.password);
         setName(data.name);
         console.log(data, 'res-data');
       } catch (error) {
@@ -27,23 +32,52 @@ const UserInfo = () => {
     fetchGetUser();
   }, []);
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(`http://localhost:5000/userInfoUpdate/${id}`, {
-        name: name,
-        password: password,
-      });
-      console.log(res, 'resskaoijod');
-      if (res.status === 201) {
-        navigate('/cart');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleSubmit = async e => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await axios.post(`http://localhost:5000/userInfoUpdate/${id}`, {
+  //       name: name,
+  //       password: password,
+  //       email: email,
+  //       passwordConfirm: passwordConfirm,
+  //     });
+  //     console.log(res, 'resskaoijod');
+  //     if (res.status === 201) {
+  //       navigate('/cart');
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const formSchema = Yup.object().shape({
+    name: Yup.string().required('이름을 입력해주세요.'),
+    // email: Yup.string().('이메일을 입력해 주세요').email('이메일 형식이 아닙니다.'),
+    password: Yup.string().required('영문, 숫자포함 8자리를 입력해주세요.'),
+    // .min(8, '최소 8자 이상 가능합니다')
+    // .max(15, '최대 15자 까지만 가능합니다')
+    // .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/, '영문 숫자포함 8자리를 입력해주세요.'),
+    passwordConfirm: Yup.string().oneOf([Yup.ref('password')], '비밀번호가 다릅니다.'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: name,
+      password: password,
+      email: email,
+      passwordConfirm: passwordConfirm,
+    },
+    validationSchema: formSchema,
+    onSubmit: values => {
+      // alert(JSON.stringify(values, null, 2));
+      // router.push('/');
+      console.log(values, 'formik Values!');
+    },
+  });
+
   return (
-    <>
+    <Box sx={{ width: '100vw', height: '100vh', margin: '0 auto' }}>
+      <Header />
       <Container component='main' maxWidth='xs'>
         <Box
           sx={{
@@ -54,9 +88,9 @@ const UserInfo = () => {
           }}
         >
           <Typography component='h1' variant='h5'>
-            Modify User Info
+            회원정보 수정
           </Typography>
-          <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <form onSubmit={formik.handleSubmit}>
             <TextField
               margin='normal'
               required
@@ -65,8 +99,9 @@ const UserInfo = () => {
               label={name}
               name='name'
               // autoFocus
-              defaultValue={name}
-              onChange={e => setName(e.target.value)}
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
             <TextField
               disabled
@@ -79,17 +114,35 @@ const UserInfo = () => {
               autoComplete='email'
               // autoFocus
               defaultValue={email}
-              onChange={e => setEmail(e.target.value)}
+              // onChange={e => setEmail(e.target.value)}
+              // onChange={formik.handleChange}
+              // onBlur={formik.handleBlur}
             />
             <TextField
               margin='normal'
               required
               fullWidth
               id='password'
-              label='User Password'
+              label={password}
               name='password'
               autoComplete='current-password'
-              onChange={e => setPassword(e.target.value)}
+              // onChange={e => setPassword(e.target.value)}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              id='Password Confirm'
+              label='비밀번호 확인'
+              name='Password Confirm'
+              autoComplete='current-password'
+              // onChange={e => setPasswordConfirm(e.target.value)}
+              value={formik.values.passwordConfirm}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               수정
@@ -103,10 +156,10 @@ const UserInfo = () => {
             >
               취소
             </Button>
-          </Box>
+          </form>
         </Box>
       </Container>
-    </>
+    </Box>
   );
 };
 
