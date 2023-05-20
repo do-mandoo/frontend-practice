@@ -7,22 +7,22 @@ import { useFormik } from 'formik';
 import Header from './Header';
 
 const UserInfo = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  console.log(id, 'id??');
+
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(id);
   const [passwordConfirm, setPasswordConfirm] = useState('');
-
-  const navigate = useNavigate();
-  const { id } = useParams();
-  console.log(id, 'id??');
 
   useEffect(() => {
     const fetchGetUser = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/profile/${id}`);
         const data = res.data;
-        setEmail(data.email);
-        setPassword(data.password);
+        // setEmail(data.email);
+        // setPassword(data.password);
         setName(data.name);
         console.log(data, 'res-data');
       } catch (error) {
@@ -31,24 +31,6 @@ const UserInfo = () => {
     };
     fetchGetUser();
   }, []);
-
-  // const handleSubmit = async e => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await axios.post(`http://localhost:5000/userInfoUpdate/${id}`, {
-  //       name: name,
-  //       password: password,
-  //       email: email,
-  //       passwordConfirm: passwordConfirm,
-  //     });
-  //     console.log(res, 'resskaoijod');
-  //     if (res.status === 201) {
-  //       navigate('/cart');
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   const formSchema = Yup.object().shape({
     name: Yup.string().required('이름을 입력해주세요.'),
@@ -67,12 +49,23 @@ const UserInfo = () => {
       email: email,
       passwordConfirm: passwordConfirm,
     },
-    validationSchema: formSchema,
-    onSubmit: values => {
-      // alert(JSON.stringify(values, null, 2));
-      // router.push('/');
+    onSubmit: async values => {
       console.log(values, 'formik Values!');
+      try {
+        const res = await axios.post(`http://localhost:5000/userInfoUpdate/${id}`, {
+          name: values.name,
+          password: values.password,
+          email: email,
+        });
+        console.log(res, 'resskaoijod');
+        if (res.status === 201) {
+          navigate('/cart');
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
+    validationSchema: formSchema,
   });
 
   return (
@@ -123,7 +116,8 @@ const UserInfo = () => {
               required
               fullWidth
               id='password'
-              label={password}
+              label='비밀번호'
+              type='password'
               name='password'
               autoComplete='current-password'
               // onChange={e => setPassword(e.target.value)}
@@ -135,10 +129,10 @@ const UserInfo = () => {
               margin='normal'
               required
               fullWidth
-              id='Password Confirm'
+              id='passwordConfirm'
               label='비밀번호 확인'
-              name='Password Confirm'
-              autoComplete='current-password'
+              type='password'
+              name='passwordConfirm'
               // onChange={e => setPasswordConfirm(e.target.value)}
               value={formik.values.passwordConfirm}
               onChange={formik.handleChange}
