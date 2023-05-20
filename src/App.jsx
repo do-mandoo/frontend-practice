@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 
 import Home from './pages/Home';
-import CartForm from './pages/Cart';
+import CartForm from './pages/ShopItems';
 import SignupForm from './pages/Signup';
 import LoginForm from './pages/Login';
 import UserInfo from './pages/UserInfo';

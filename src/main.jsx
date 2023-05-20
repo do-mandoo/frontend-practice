@@ -7,7 +7,7 @@ import Home from './pages/Home.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import SignupForm from './pages/Signup.jsx';
 import LoginForm from './pages/Login.jsx';
-import CartForm from './pages/Cart.jsx';
+import CartForm from './pages/ShopItems.jsx';
 import UserInfo from './pages/UserInfo.jsx';
 
 const router = createBrowserRouter([
