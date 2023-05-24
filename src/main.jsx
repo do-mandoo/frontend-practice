@@ -9,6 +9,7 @@ import SignupForm from './pages/Signup.jsx';
 import LoginForm from './pages/Login.jsx';
 import CartForm from './pages/ShopItems.jsx';
 import UserInfo from './pages/UserInfo.jsx';
+import SignupAdminForm from './pages/SignupAdmin.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <SignupForm />,
+  },
+  {
+    path: '/signupAdmin',
+    element: <SignupAdminForm />,
   },
   { path: '/login', element: <LoginForm /> },
   { path: '/cart', element: <CartForm /> },

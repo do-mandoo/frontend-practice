@@ -15,6 +15,9 @@ const Home = () => {
             <Link to='/signup'>
               <Button>Sign-up</Button>
             </Link>
+            <Link to='/signupAdmin'>
+              <Button>Sign-up-Admin</Button>
+            </Link>
             <Link to='/login'>
               <Button>Login</Button>
             </Link>
