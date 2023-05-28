@@ -82,6 +82,7 @@ const CartSide = () => {
       console.log(err);
     }
   };
+
   // 수량 증가
   const increaseNum = async itemId => {
     console.log(itemId, 'increase e');

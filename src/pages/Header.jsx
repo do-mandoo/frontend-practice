@@ -114,6 +114,7 @@ const Header = ({ open, setOpen }) => {
               Your Preference
             </Typography>
           </Link>
+          {/* 로그인 계정이 관리자인지 고객인지 확인 */}
           {location.pathname === '/' ? (
             <Box></Box>
           ) : getUser !== null || undefined ? (
