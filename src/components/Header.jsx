@@ -53,11 +53,11 @@ const Header = ({ open, setOpen }) => {
 
   // url위치 확인
   const location = useLocation();
-  console.log(location.pathname, '오우 로케이션');
+  console.log(location.pathname, 'pathname');
 
   // localStorage에 저장한 email을 가져온다
   const getUser = localStorage.getItem('email');
-  console.log(getUser === null, 'getuser');
+  console.log(getUser, 'getuser');
 
   const navigate = useNavigate();
 
@@ -76,7 +76,7 @@ const Header = ({ open, setOpen }) => {
       // 로그인한 계정의 데이터를 loginUserData에 저장.
       const mapfilter = res.data.filter(data => data.email === getUser);
       setLoginUserData(mapfilter);
-      console.log(loginUserData, '확인isAdmin???');
+      console.log(loginUserData, 'isAdmin?');
     };
     fetchGetAllUsers();
   }, []);
@@ -88,7 +88,7 @@ const Header = ({ open, setOpen }) => {
       localStorage.removeItem('email');
       localStorage.removeItem('password');
     }
-    navigate('/cart');
+    navigate('/main');
     console.log(res, 'res 로그아웃');
   };
 
@@ -114,10 +114,8 @@ const Header = ({ open, setOpen }) => {
               Your Preference
             </Typography>
           </Link>
-          {/* 로그인 계정이 관리자인지 고객인지 확인 */}
-          {location.pathname === '/' ? (
-            <Box></Box>
-          ) : getUser !== null || undefined ? (
+          {/* 위치가 홈페이지이고 로그인 계정이 관리자인지 고객인지 확인 */}
+          {getUser !== null || undefined ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box>
                 {loginUserData &&
@@ -136,7 +134,7 @@ const Header = ({ open, setOpen }) => {
                     data =>
                       data.email === getUser && (
                         <Link key={data.name} to={`/userInfo/` + data.email}>
-                          <Button sx={{ color: '#000' }}>회원정보수정</Button>
+                          <Button sx={{ ml: '10px', color: '#000' }}>회원정보수정</Button>
                         </Link>
                       )
                   )}
@@ -150,36 +148,42 @@ const Header = ({ open, setOpen }) => {
               <Button sx={{ color: '#000' }}>Log-in</Button>
             </Link>
           )}
-
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            edge='end'
-            onClick={handleDrawerOpen}
-            sx={{ ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Drawer
-            sx={{
-              // width: drawerWidth,
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
-                // width: drawerWidth,
-              },
-              ...(!open && { display: 'none' }),
-            }}
-            variant='persistent'
-            anchor='right'
-            open={open}
-          >
-            <DrawerHeader>
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          {/* 사이드바 영역 */}
+          {getUser !== null || undefined ? (
+            <>
+              <IconButton
+                color='inherit'
+                aria-label='open drawer'
+                edge='end'
+                onClick={handleDrawerOpen}
+                sx={{ ...(open && { display: 'none' }) }}
+              >
+                <MenuIcon />
               </IconButton>
-            </DrawerHeader>
-            <CartSide />
-          </Drawer>
+              <Drawer
+                sx={{
+                  // width: drawerWidth,
+                  flexShrink: 0,
+                  '& .MuiDrawer-paper': {
+                    // width: drawerWidth,
+                  },
+                  ...(!open && { display: 'none' }),
+                }}
+                variant='persistent'
+                anchor='right'
+                open={open}
+              >
+                <DrawerHeader>
+                  <IconButton onClick={handleDrawerClose}>
+                    {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                  </IconButton>
+                </DrawerHeader>
+                <CartSide />
+              </Drawer>
+            </>
+          ) : (
+            <Box></Box>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

@@ -21,7 +21,7 @@ import ProductItems from './ProductItems';
 
 const drawerWidth = 440;
 
-const CartForm = () => {
+const MainListForm = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
 
@@ -149,17 +149,26 @@ const CartForm = () => {
           {/* </Box> */}
           <Container sx={{ py: 2, position: 'relative' }} maxWidth='md'>
             <Box>
-              <Button
-                sx={{
-                  // margin: '0 10px 10px 0',
-                  position: 'absolute',
-                  right: '30px',
-                  top: '-30px',
-                }}
-                onClick={handleOpen}
-              >
-                추가
-              </Button>
+              {loginUserData &&
+                loginUserData.map(data =>
+                  data.isAdmin ? (
+                    <Button
+                      key={data.name}
+                      sx={{
+                        // margin: '0 10px 10px 0',
+                        position: 'absolute',
+                        right: '30px',
+                        top: '-30px',
+                      }}
+                      onClick={handleOpen}
+                    >
+                      추가
+                    </Button>
+                  ) : (
+                    <></>
+                  )
+                )}
+
               <Modal
                 open={addModalOpen}
                 onClose={handleClose}
@@ -232,4 +241,4 @@ const CartForm = () => {
   );
 };
 
-export default CartForm;
+export default MainListForm;

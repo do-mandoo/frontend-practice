@@ -59,7 +59,7 @@ const UserInfo = () => {
         });
         console.log(res, 'resskaoijod');
         if (res.status === 201) {
-          navigate('/cart');
+          navigate('/main');
         }
       } catch (error) {
         console.error(error);

@@ -29,7 +29,7 @@ const LoginForm = () => {
       // localStorage에 저장
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
-      navigate('/cart');
+      navigate('/main');
       setIsSucess(true);
 
       console.log(isSuccess, 'isSucceess???');

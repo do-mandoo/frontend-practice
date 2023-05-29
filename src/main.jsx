@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Home from './pages/Home.jsx';
-import ErrorPage from './pages/ErrorPage.jsx';
-import SignupForm from './pages/Signup.jsx';
-import LoginForm from './pages/Login.jsx';
-import CartForm from './pages/ShopItems.jsx';
-import UserInfo from './pages/UserInfo.jsx';
-import SignupAdminForm from './pages/SignupAdmin.jsx';
+import Home from './components/Home.jsx';
+import ErrorPage from './components/ErrorPage.jsx';
+import SignupForm from './components/Signup.jsx';
+import LoginForm from './components/Login.jsx';
+import MainListForm from './components/MainList.jsx';
+import UserInfo from './components/UserInfo.jsx';
+import SignupAdminForm from './components/SignupAdmin.jsx';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     element: <SignupAdminForm />,
   },
   { path: '/login', element: <LoginForm /> },
-  { path: '/cart', element: <CartForm /> },
+  { path: '/main', element: <MainListForm /> },
   { path: '/userInfo/:id', element: <UserInfo /> },
 ]);
 

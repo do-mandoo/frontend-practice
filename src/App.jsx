@@ -1,23 +1,25 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-
-import Home from './pages/Home';
-import CartForm from './pages/ShopItems';
-import SignupForm from './pages/Signup';
-import LoginForm from './pages/Login';
-import UserInfo from './pages/UserInfo';
-import SignupAdminForm from './pages/SignupAdmin';
+import Header from './components/Header';
+import Home from './components/Home';
+import MainListForm from './components/MainList';
+import LoginForm from './components/Login';
+import ErrorPage from './components/ErrorPage';
+import UserInfo from './components/UserInfo';
+import SignupAdminForm from './components/SignupAdmin';
+import SignupForm from './components/Signup';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/cart' element={<CartForm />} />
+        <Route path='/main' element={<MainListForm />} />
         <Route path='/login' element={<LoginForm />} />
         <Route path='/signup' element={<SignupForm />} />
         <Route path='/signupAdmin' element={<SignupAdminForm />} />
         <Route path='/userInfo/:id' element={<UserInfo />} />
+        <Route path='*' element={<ErrorPage />} />
       </Routes>
     </>
   );
