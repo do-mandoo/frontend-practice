@@ -51,13 +51,13 @@ const Header = ({ open, setOpen }) => {
   };
   const theme = useTheme();
 
-  // url위치 확인
-  const location = useLocation();
-  console.log(location.pathname, 'pathname');
+  // // url위치 확인
+  // const location = useLocation();
+  // console.log(location.pathname, 'pathname');
 
   // localStorage에 저장한 email을 가져온다
   const getUser = localStorage.getItem('email');
-  console.log(getUser, 'getuser');
+  // console.log(getUser, 'getuser');
 
   const navigate = useNavigate();
 
@@ -72,11 +72,11 @@ const Header = ({ open, setOpen }) => {
       const res = await axios.get('http://localhost:5000/getSignup');
       // 모든 계정을 userData에 저장.
       setUsersData(res.data);
-      console.log(res.data, 'usrGEtress');
+      // console.log(res.data, 'usrGEtress');
       // 로그인한 계정의 데이터를 loginUserData에 저장.
       const mapfilter = res.data.filter(data => data.email === getUser);
       setLoginUserData(mapfilter);
-      console.log(loginUserData, 'isAdmin?');
+      // console.log(loginUserData, 'isAdmin?');
     };
     fetchGetAllUsers();
   }, []);

@@ -31,11 +31,13 @@ const ProductItem = ({ addModalOpen, setAddModalOpen }) => {
         },
       });
 
-      console.log(response.data);
+      console.log(response.data, 'res.data');
 
       setProductName('');
       setProductDescription('');
       setProductImage(null);
+
+      setAddModalOpen(false);
     } catch (error) {
       console.error(error);
     }
@@ -49,6 +51,7 @@ const ProductItem = ({ addModalOpen, setAddModalOpen }) => {
     <Box>
       <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <TextField
+          sx={{ mb: 1 }}
           required
           fullWidth
           id='name'
@@ -57,6 +60,7 @@ const ProductItem = ({ addModalOpen, setAddModalOpen }) => {
           onChange={e => setProductName(e.target.value)}
         />
         <TextField
+          sx={{ mb: 1 }}
           required
           fullWidth
           id='description'
@@ -67,17 +71,19 @@ const ProductItem = ({ addModalOpen, setAddModalOpen }) => {
         <TextField
           fullWidth
           id='image'
-          label='Image'
+          // label='Image'
           name='image'
           type='file'
           onChange={handleImageChange}
         />
-        <Button type='submit' variant='contained' sx={{ mt: 3, mb: 2 }}>
-          상품 등록
-        </Button>
-        <Button onClick={() => setAddModalOpen(false)} variant='contained' sx={{ mt: 3, mb: 2 }}>
-          취소
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button type='submit' variant='contained' sx={{ mt: 2, mr: 2 }}>
+            상품 등록
+          </Button>
+          <Button onClick={() => setAddModalOpen(false)} variant='contained' sx={{ mt: 2 }}>
+            취소
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

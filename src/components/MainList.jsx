@@ -30,6 +30,15 @@ const MainListForm = () => {
 
   // 로그인한 계정
   const [loginUserData, setLoginUserData] = useState();
+
+  // 상품추가 모달 열고/닫기
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const handleOpen = () => setAddModalOpen(true);
+  const handleClose = () => setAddModalOpen(false);
+
+  const getUser = localStorage.getItem('email');
+  const navigate = useNavigate();
+
   // 랜더링 될 때, 모든 사용자 계정을 가져온다.
   useEffect(() => {
     const fetchGetAllUsers = async () => {
@@ -42,17 +51,26 @@ const MainListForm = () => {
     fetchGetAllUsers();
   }, []);
 
-  // 상품추가 모달 열고/닫기
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const handleOpen = () => setAddModalOpen(true);
-  const handleClose = () => setAddModalOpen(false);
-
-  // 장바구니 아이템 불러오기
   useEffect(() => {
-    fetchGetCartItem();
     fetchGetAllProduct();
+    fetchGetCartItem();
+    navigate;
   }, []);
 
+  // 상품 아이템 불러오기
+  const fetchGetAllProduct = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/getAllProduct');
+      const data = res.data;
+      console.log(data, 'get아이템들 다 res data');
+
+      setAllProducts(data);
+    } catch (error) {
+      console.log(error, '상품 전체 가져오기 에러');
+    }
+  };
+
+  // 장바구니 아이템 불러오기
   const fetchGetCartItem = async () => {
     try {
       const res = await axios.get('http://localhost:5000/getItems');
@@ -64,17 +82,6 @@ const MainListForm = () => {
     }
   };
 
-  const fetchGetAllProduct = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/getAllProduct');
-      const data = res.data;
-      setAllProducts(data);
-      console.log(data, '상품들 다');
-    } catch (error) {
-      console.log(error, '상품 전체 가져오기 에러');
-    }
-  };
-
   // 장바구니 아이템 추가 함수
   const addItem = async productName => {
     try {
@@ -82,7 +89,6 @@ const MainListForm = () => {
       console.log(res, 'res');
       fetchGetCartItem();
       setCartItems([...cartItems, res.data]);
-      console.log(cartItems, 'itemsssss');
     } catch (error) {
       console.log(error, '아이템 추가 에러');
     }
@@ -94,22 +100,21 @@ const MainListForm = () => {
       await axios.delete(`http://localhost:5000/deleteProducts/${itemId}`);
 
       // 배열 복사
-      const updatedItems = [...cartItems];
+      const updatedItems = [...allProducts];
       // 삭제할 아이템id의 index추출
       const indexFind = updatedItems.findIndex(item => item._id === itemId);
       console.log(indexFind, 'indexFind');
       // 추출한 index로 배열의splice를하여 아이템 삭제
       updatedItems.splice(indexFind, 1);
       // 상태 업데이트
-      setCartItems(updatedItems);
-      console.log(cartItems, 'cartItems');
+      setAllProducts(updatedItems);
+      console.log(allProducts, 'allProducts');
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getUser = localStorage.getItem('email');
-  const navigate = useNavigate();
+  // 상품 추가 반영
 
   if (getUser === null || undefined) {
     return navigate('/');
@@ -165,7 +170,7 @@ const MainListForm = () => {
                       추가
                     </Button>
                   ) : (
-                    <></>
+                    <Box key={data.name}></Box>
                   )
                 )}
 
@@ -193,46 +198,53 @@ const MainListForm = () => {
               </Modal>
             </Box>
             <Grid container spacing={4}>
-              {allProducts.map(product => {
-                return (
-                  <Grid item key={product._id} xs={12} sm={6} md={4}>
-                    <Card
-                      sx={{ width: '100%', mr: '10px', display: 'flex', flexDirection: 'column' }}
-                    >
-                      <CardActionArea>
-                        <CardMedia
-                          component='img'
-                          height='140'
-                          image={product.image}
-                          alt='product_image'
-                        />
-                        <CardContent>
-                          <Typography component='div' gutterBottom variant='h5'>
-                            {product.name}
-                          </Typography>
-                          <Typography variant='body2'>{product.description}</Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button onClick={() => addItem(product.name)}>담기</Button>
-                        <>
-                          {loginUserData &&
-                            loginUserData.map(data =>
-                              data.isAdmin ? (
-                                <Box key={data.name}>
-                                  <Button>수정</Button>
-                                  <Button onClick={() => removeProduct(data.id)}>삭제</Button>
-                                </Box>
-                              ) : (
-                                <></>
-                              )
-                            )}
-                        </>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                );
-              })}
+              {allProducts.length ? (
+                allProducts.map((product, index) => {
+                  console.log(product.image, '타입을 알아보자');
+                  const imgUrl = product.image.split('\\')[8];
+                  console.log(imgUrl[8], 'imgUrl');
+                  return (
+                    <Grid item key={index} xs={12} sm={6} md={4}>
+                      <Card
+                        sx={{ width: '100%', mr: '10px', display: 'flex', flexDirection: 'column' }}
+                      >
+                        <CardActionArea>
+                          <CardMedia
+                            component='img'
+                            height='140'
+                            src={`http://localhost:5000/image/${imgUrl}`}
+                            alt='product_image'
+                          />
+                          <CardContent>
+                            <Typography component='div' gutterBottom variant='h5'>
+                              {product.name}
+                            </Typography>
+                            <Typography variant='body2'>{product.description}</Typography>
+                          </CardContent>
+                        </CardActionArea>
+                        <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <Button onClick={() => addItem(product.name)}>담기</Button>
+                          <>
+                            {loginUserData &&
+                              loginUserData.map(data =>
+                                data.isAdmin ? (
+                                  <Box key={data.name}>
+                                    <Button>수정</Button>
+                                    <Button onClick={() => removeProduct(product._id)}>삭제</Button>
+                                  </Box>
+                                ) : (
+                                  <Box key={data.name}></Box>
+                                )
+                              )}
+                          </>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  );
+                })
+              ) : (
+                <Box>상품이 없습니다. 추가 버튼을 클릭하여 상품을 추가하세요.</Box>
+              )}
             </Grid>
           </Container>
         </Box>

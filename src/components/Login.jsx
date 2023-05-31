@@ -25,10 +25,12 @@ const LoginForm = () => {
         email: data.get('email'),
         password: data.get('password'),
       });
-      console.log(res, '로그인 성공');
+      const { token } = res.data;
+      console.log(token, '로그인 성공');
       // localStorage에 저장
       localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
+      localStorage.setItem('token', token);
+      // localStorage.setItem('password', password);
       navigate('/main');
       setIsSucess(true);
 
