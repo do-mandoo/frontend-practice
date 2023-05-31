@@ -12,18 +12,19 @@ const ProductItem = ({ addModalOpen, setAddModalOpen }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const fileName = productImage.name; // 이미지 파일의 이름 가져오기
-      const extension = fileName.substring(fileName.lastIndexOf('.'));
-      const uniqueFileName = Date.now() + extension; // 고유한 파일 이름 생성
+      // const fileName = productImage.name; // 이미지 파일의 이름 가져오기
+      // const extension = fileName.substring(fileName.lastIndexOf('.'));
+      // const uniqueFileName = Date.now() + extension; // 고유한 파일 이름 생성
 
       const formData = new FormData();
       formData.append('name', productName);
       formData.append('description', productDescription);
+      formData.append('image', productImage);
 
       console.log(formData, 'formdata어펜드가 왜 안되는거같냐');
-      if (productImage) {
-        formData.append('image', productImage, uniqueFileName); // 파일 이름을 함께 전달
-      }
+      // if (productImage) {
+      //   formData.append('image', productImage, uniqueFileName); // 파일 이름을 함께 전달
+      // }
 
       const response = await axios.post('http://localhost:5000/adminAddProduct', formData, {
         headers: {

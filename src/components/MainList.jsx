@@ -64,7 +64,23 @@ const MainListForm = () => {
       const data = res.data;
       console.log(data, 'get아이템들 다 res data');
 
+      // // 각 상품의 이미지 URL을 가져와서 이미지를 설정합니다
+      // const productsWithImages = await Promise.all(
+      //   data.map(async product => {
+      //     const imageUrl = `http://localhost:5000/image/${product.image}`;
+      //     const imageRes = await axios.get(imageUrl, { responseType: 'blob' });
+      //     const imageUrlObject = URL.createObjectURL(imageRes.data);
+      //     return {
+      //       ...product,
+      //       imageUrl: imageUrlObject,
+      //     };
+      //   })
+      // );
+      // setAllProducts(productsWithImages);
+      // console.log(productsWithImages, '상품들 다');
+
       setAllProducts(data);
+      console.log(data, 'data');
     } catch (error) {
       console.log(error, '상품 전체 가져오기 에러');
     }
@@ -202,7 +218,7 @@ const MainListForm = () => {
                 allProducts.map((product, index) => {
                   console.log(product.image, '타입을 알아보자');
                   const imgUrl = product.image.split('\\')[8];
-                  console.log(imgUrl[8], 'imgUrl');
+                  // console.log(imgUrl[8], 'imgUrl');
                   return (
                     <Grid item key={index} xs={12} sm={6} md={4}>
                       <Card
@@ -212,7 +228,7 @@ const MainListForm = () => {
                           <CardMedia
                             component='img'
                             height='140'
-                            src={`http://localhost:5000/image/${imgUrl}`}
+                            src={`http://localhost:5000/uploads/${imgUrl}`}
                             alt='product_image'
                           />
                           <CardContent>
