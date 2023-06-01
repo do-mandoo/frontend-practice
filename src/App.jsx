@@ -8,6 +8,7 @@ import ErrorPage from './components/ErrorPage';
 import UserInfo from './components/UserInfo';
 import SignupAdminForm from './components/SignupAdmin';
 import SignupForm from './components/Signup';
+import ModiItem from './components/ModiItem';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/signup' element={<SignupForm />} />
         <Route path='/signupAdmin' element={<SignupAdminForm />} />
         <Route path='/userInfo/:id' element={<UserInfo />} />
+        <Route path='/modiItem/:id' element={<ModiItem />} />
         <Route path='*' element={<ErrorPage />} />
       </Routes>
     </>

@@ -16,7 +16,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 // import products from '../components/Products';
 import Header from './Header';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProductItems from './ProductItems';
 
 const drawerWidth = 440;
@@ -24,6 +24,9 @@ const drawerWidth = 440;
 const MainListForm = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+
+  // const [productData, setProductData] = useState();
+  const [itemInfo, setItemInfo] = useState();
 
   // 슬라이드 카트 사이드바 열고/닫기
   const [cartSidebarOpen, setCartSidebarOpen] = useState(false);
@@ -46,7 +49,7 @@ const MainListForm = () => {
       // 로그인한 계정의 데이터를 loginUserData에 저장.
       const mapfilter = res.data.filter(data => data.email === getUser);
       setLoginUserData(mapfilter);
-      console.log(loginUserData, '확인isAdmin???');
+      // console.log(loginUserData, '확인isAdmin???');
     };
     fetchGetAllUsers();
   }, []);
@@ -80,7 +83,6 @@ const MainListForm = () => {
       // console.log(productsWithImages, '상품들 다');
 
       setAllProducts(data);
-      console.log(data, 'data');
     } catch (error) {
       console.log(error, '상품 전체 가져오기 에러');
     }
@@ -216,7 +218,7 @@ const MainListForm = () => {
             <Grid container spacing={4}>
               {allProducts.length ? (
                 allProducts.map((product, index) => {
-                  console.log(product.image, '타입을 알아보자');
+                  // console.log(product.image, '타입을 알아보자');
                   const imgUrl = product.image.split('\\')[8];
                   // console.log(imgUrl[8], 'imgUrl');
                   return (
@@ -245,7 +247,15 @@ const MainListForm = () => {
                               loginUserData.map(data =>
                                 data.isAdmin ? (
                                   <Box key={data.name}>
-                                    <Button>수정</Button>
+                                    <Link to={`/modiItem/` + product._id}>
+                                      <Button
+                                        type='submit'
+                                        variant='contained'
+                                        sx={{ mt: 2, mr: 2 }}
+                                      >
+                                        수정
+                                      </Button>
+                                    </Link>
                                     <Button onClick={() => removeProduct(product._id)}>삭제</Button>
                                   </Box>
                                 ) : (

@@ -10,6 +10,7 @@ import LoginForm from './components/Login.jsx';
 import MainListForm from './components/MainList.jsx';
 import UserInfo from './components/UserInfo.jsx';
 import SignupAdminForm from './components/SignupAdmin.jsx';
+import ModiItem from './components/ModiItem.jsx';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
   { path: '/login', element: <LoginForm /> },
   { path: '/main', element: <MainListForm /> },
   { path: '/userInfo/:id', element: <UserInfo /> },
+  { path: '/modiItem/:id', element: <ModiItem /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

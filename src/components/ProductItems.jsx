@@ -2,12 +2,11 @@ import { Box, Button, TextField } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 
-const ProductItem = ({ addModalOpen, setAddModalOpen }) => {
+const ProductItem = ({ setAddModalOpen }) => {
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productImage, setProductImage] = useState(null);
   console.log(productImage, 'productImage');
-  console.log(productName, 'productName');
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -21,7 +20,6 @@ const ProductItem = ({ addModalOpen, setAddModalOpen }) => {
       formData.append('description', productDescription);
       formData.append('image', productImage);
 
-      console.log(formData, 'formdata어펜드가 왜 안되는거같냐');
       // if (productImage) {
       //   formData.append('image', productImage, uniqueFileName); // 파일 이름을 함께 전달
       // }
