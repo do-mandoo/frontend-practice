@@ -14,7 +14,6 @@ import {
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-// import products from '../components/Products';
 import Header from './Header';
 import { Link, useNavigate } from 'react-router-dom';
 import ProductItems from './ProductItems';
@@ -24,9 +23,6 @@ const drawerWidth = 440;
 const MainListForm = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-
-  // const [productData, setProductData] = useState();
-  const [itemInfo, setItemInfo] = useState();
 
   // 슬라이드 카트 사이드바 열고/닫기
   const [cartSidebarOpen, setCartSidebarOpen] = useState(false);
@@ -65,22 +61,6 @@ const MainListForm = () => {
     try {
       const res = await axios.get('http://localhost:5000/getAllProduct');
       const data = res.data;
-      console.log(data, 'get아이템들 다 res data');
-
-      // // 각 상품의 이미지 URL을 가져와서 이미지를 설정합니다
-      // const productsWithImages = await Promise.all(
-      //   data.map(async product => {
-      //     const imageUrl = `http://localhost:5000/image/${product.image}`;
-      //     const imageRes = await axios.get(imageUrl, { responseType: 'blob' });
-      //     const imageUrlObject = URL.createObjectURL(imageRes.data);
-      //     return {
-      //       ...product,
-      //       imageUrl: imageUrlObject,
-      //     };
-      //   })
-      // );
-      // setAllProducts(productsWithImages);
-      // console.log(productsWithImages, '상품들 다');
 
       setAllProducts(data);
     } catch (error) {
@@ -94,7 +74,6 @@ const MainListForm = () => {
       const res = await axios.get('http://localhost:5000/getItems');
       const data = res.data;
       setCartItems(data);
-      console.log(data, 'data');
     } catch (error) {
       console.log(error, '아이템 불러오기 에러');
     }
@@ -104,7 +83,6 @@ const MainListForm = () => {
   const addItem = async productName => {
     try {
       const res = await axios.post('http://localhost:5000/postItems', { name: productName });
-      console.log(res, 'res');
       fetchGetCartItem();
       setCartItems([...cartItems, res.data]);
     } catch (error) {
@@ -126,14 +104,18 @@ const MainListForm = () => {
       updatedItems.splice(indexFind, 1);
       // 상태 업데이트
       setAllProducts(updatedItems);
-      console.log(allProducts, 'allProducts');
     } catch (err) {
       console.log(err);
     }
   };
 
-  // 상품 추가 반영
+  const handleProductAdded = newProduct => {
+    // 기존의 상품 리스트에 새로운 상품 추가
+    setAllProducts(prevProducts => [...prevProducts, newProduct]);
+    setAddModalOpen(false); // 모달을 닫기
+  };
 
+  // 로그인이 안되어있다면 index페이지로 이동
   if (getUser === null || undefined) {
     return navigate('/');
   }
@@ -141,7 +123,12 @@ const MainListForm = () => {
   return (
     <>
       <Box sx={{ minHeight: '100vh' }}>
-        <Header open={cartSidebarOpen} setOpen={setCartSidebarOpen} />
+        <Header
+          open={cartSidebarOpen}
+          setOpen={setCartSidebarOpen}
+          cartItems={cartItems}
+          setCartItems={setCartItems}
+        />
         <Box
           sx={{
             mt: '40px',
@@ -155,12 +142,9 @@ const MainListForm = () => {
           }}
           open={cartSidebarOpen}
         >
-          {/* <Box sx={{}}> */}
           <Typography
             variant='h3'
             sx={{
-              // display: 'flex',
-              // justifyContent: 'center',
               color: 'rgb(178, 79, 126)',
               fontFamily: 'Ubuntu',
               fontWeight: 700,
@@ -169,7 +153,6 @@ const MainListForm = () => {
           >
             Product Item
           </Typography>
-          {/* </Box> */}
           <Container sx={{ py: 2, position: 'relative' }} maxWidth='md'>
             <Box>
               {loginUserData &&
@@ -178,7 +161,6 @@ const MainListForm = () => {
                     <Button
                       key={data.name}
                       sx={{
-                        // margin: '0 10px 10px 0',
                         position: 'absolute',
                         right: '30px',
                         top: '-30px',
@@ -211,16 +193,17 @@ const MainListForm = () => {
                     p: 4,
                   }}
                 >
-                  <ProductItems addModalOpen={addModalOpen} setAddModalOpen={setAddModalOpen} />
+                  <ProductItems
+                    onProductAdded={handleProductAdded}
+                    setAddModalOpen={setAddModalOpen}
+                  />
                 </Box>
               </Modal>
             </Box>
             <Grid container spacing={4}>
               {allProducts.length ? (
                 allProducts.map((product, index) => {
-                  // console.log(product.image, '타입을 알아보자');
                   const imgUrl = product.image.split('\\')[8];
-                  // console.log(imgUrl[8], 'imgUrl');
                   return (
                     <Grid item key={index} xs={12} sm={6} md={4}>
                       <Card
@@ -251,7 +234,18 @@ const MainListForm = () => {
                                       <Button
                                         type='submit'
                                         variant='contained'
-                                        sx={{ mt: 2, mr: 2 }}
+                                        sx={{
+                                          bgcolor: 'unset',
+                                          boxShadow: 'unset',
+                                          color: 'rgb(25, 118, 210)',
+                                          '&:hover': {
+                                            bgcolor: 'unset',
+                                            boxShadow: 'unset',
+                                            textDecoration: 'none',
+                                            backgroundColor: 'rgba(25, 118, 210, 0.04)',
+                                            borderColor: '#646cff',
+                                          },
+                                        }}
                                       >
                                         수정
                                       </Button>

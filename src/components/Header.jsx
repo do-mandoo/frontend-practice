@@ -2,7 +2,7 @@ import { Box, Toolbar, Typography, Button, IconButton, Drawer } from '@mui/mater
 import MuiAppBar from '@mui/material/AppBar';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CartSide from './CartSide';
 import { styled, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -13,7 +13,7 @@ const drawerWidth = 440;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open',
-})(({ theme, open }) => ({
+})(({ open }) => ({
   // transition: theme.transitions.create(['margin', 'width'], {
   //   easing: theme.transitions.easing.sharp,
   //   duration: theme.transitions.duration.leavingScreen,
@@ -39,7 +39,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-const Header = ({ open, setOpen }) => {
+const Header = ({ open, setOpen, cartItems, setCartItems }) => {
   // // 슬라이드 카트 바 열고/닫기
   // const [open, setOpen] = useState(false);
 
@@ -178,7 +178,7 @@ const Header = ({ open, setOpen }) => {
                     {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                   </IconButton>
                 </DrawerHeader>
-                <CartSide />
+                <CartSide items={cartItems} setItems={setCartItems} />
               </Drawer>
             </>
           ) : (

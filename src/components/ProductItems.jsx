@@ -1,42 +1,35 @@
 import { Box, Button, TextField } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const ProductItem = ({ setAddModalOpen }) => {
+const ProductItem = ({ onProductAdded, setAddModalOpen }) => {
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productImage, setProductImage] = useState(null);
-  console.log(productImage, 'productImage');
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      // const fileName = productImage.name; // 이미지 파일의 이름 가져오기
-      // const extension = fileName.substring(fileName.lastIndexOf('.'));
-      // const uniqueFileName = Date.now() + extension; // 고유한 파일 이름 생성
-
       const formData = new FormData();
       formData.append('name', productName);
       formData.append('description', productDescription);
       formData.append('image', productImage);
-
-      // if (productImage) {
-      //   formData.append('image', productImage, uniqueFileName); // 파일 이름을 함께 전달
-      // }
 
       const response = await axios.post('http://localhost:5000/adminAddProduct', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      // 상품 추가 업데이트
+      onProductAdded(response.data);
 
-      console.log(response.data, 'res.data');
+      // console.log(response.data, 'res.data');
 
       setProductName('');
       setProductDescription('');
       setProductImage(null);
 
-      setAddModalOpen(false);
+      // setAddModalOpen(false);
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +38,9 @@ const ProductItem = ({ setAddModalOpen }) => {
   const handleImageChange = e => {
     setProductImage(e.target.files[0]);
   };
-
+  // useEffect(() => {
+  //   fetchGetAllProduct();
+  // }, [fetchGetAllProduct]);
   return (
     <Box>
       <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

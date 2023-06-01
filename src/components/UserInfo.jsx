@@ -9,7 +9,6 @@ import Header from './Header';
 const UserInfo = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(id, 'id??');
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -36,9 +35,6 @@ const UserInfo = () => {
     name: Yup.string().required('이름을 입력해주세요.'),
     // email: Yup.string().('이메일을 입력해 주세요').email('이메일 형식이 아닙니다.'),
     password: Yup.string().required('영문, 숫자포함 8자리를 입력해주세요.'),
-    // .min(8, '최소 8자 이상 가능합니다')
-    // .max(15, '최대 15자 까지만 가능합니다')
-    // .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/, '영문 숫자포함 8자리를 입력해주세요.'),
     passwordConfirm: Yup.string().oneOf([Yup.ref('password')], '비밀번호가 다릅니다.'),
   });
 
