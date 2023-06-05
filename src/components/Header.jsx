@@ -89,7 +89,7 @@ const Header = ({ open, setOpen, cartItems, setCartItems }) => {
       localStorage.removeItem('password');
     }
     navigate('/main');
-    console.log(res, 'res 로그아웃');
+    // console.log(res, 'res 로그아웃');
   };
 
   return (

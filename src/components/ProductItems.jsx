@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const ProductItem = ({ onProductAdded, setAddModalOpen }) => {
   const [productName, setProductName] = useState('');

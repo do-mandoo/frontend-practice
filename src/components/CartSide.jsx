@@ -12,30 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const CartSide = ({ items, setItems }) => {
-  console.log(items, 'itmesssssssss');
-  // const [cartItems, setItems] = useState([items]);
-
-  // // 장바구니 아이템 불러오기
-  // useEffect(() => {
-  //   fetchItem();
-  // }, []);
-
-  // const fetchItem = async () => {
-  //   try {
-  //     const res = await axios.get('http://localhost:5000/getItems');
-  //     const data = res.data;
-  //     setCartItems(data);
-  //     // setItem(prevItem => [...prevItem, data]);
-  //     // console.log(data, 'data');
-  //   } catch (error) {
-  //     console.log(error, '아이템 불러오기 에러');
-  //   }
-  // };
-
   // 장바구니 아이템 삭제 함수
   const removeItem = async itemId => {
     try {
@@ -75,11 +54,6 @@ const CartSide = ({ items, setItems }) => {
       console.log(error, '수량 감소 에러');
     }
   };
-
-  // const handleCartAdded = newItem => {
-  //   // 기존의 상품 리스트에 새로운 상품 추가
-  //   setCartItems(prevItem => [...prevItem, newItem]);
-  // };
 
   return (
     <Box>

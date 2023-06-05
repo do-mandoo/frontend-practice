@@ -23,7 +23,7 @@ const UserInfo = () => {
         // setEmail(data.email);
         // setPassword(data.password);
         setName(data.name);
-        console.log(data, 'res-data');
+        // console.log(data, 'res-data');
       } catch (error) {
         console.log(error, '사용자 불러오기 에러');
       }
@@ -46,14 +46,14 @@ const UserInfo = () => {
       passwordConfirm: passwordConfirm,
     },
     onSubmit: async values => {
-      console.log(values, 'formik Values!');
+      // console.log(values, 'formik Values!');
       try {
         const res = await axios.post(`http://localhost:5000/userInfoUpdate/${id}`, {
           name: values.name,
           password: values.password,
           email: email,
         });
-        console.log(res, 'resskaoijod');
+        // console.log(res, 'resskaoijod');
         if (res.status === 201) {
           navigate('/main');
         }

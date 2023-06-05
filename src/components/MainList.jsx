@@ -99,7 +99,7 @@ const MainListForm = () => {
       const updatedItems = [...allProducts];
       // 삭제할 아이템id의 index추출
       const indexFind = updatedItems.findIndex(item => item._id === itemId);
-      console.log(indexFind, 'indexFind');
+      // console.log(indexFind, 'indexFind');
       // 추출한 index로 배열의splice를하여 아이템 삭제
       updatedItems.splice(indexFind, 1);
       // 상태 업데이트

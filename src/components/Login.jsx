@@ -13,12 +13,12 @@ const LoginForm = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log('submit login');
+    // console.log('submit login');
     const data = new FormData(e.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
     // 로그인 요청 보내기
     try {
       const res = await axios.post('http://localhost:5000/login', {
@@ -26,7 +26,7 @@ const LoginForm = () => {
         password: data.get('password'),
       });
       const { token } = res.data;
-      console.log(token, '로그인 성공');
+      // console.log(token, '로그인 성공');
       // localStorage에 저장
       localStorage.setItem('email', email);
       localStorage.setItem('token', token);
@@ -34,7 +34,7 @@ const LoginForm = () => {
       navigate('/main');
       setIsSucess(true);
 
-      console.log(isSuccess, 'isSucceess???');
+      // console.log(isSuccess, 'isSucceess???');
     } catch (err) {
       console.error('서버 오류:', err);
       setIsSucess(false);

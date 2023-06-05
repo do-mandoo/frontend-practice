@@ -23,9 +23,9 @@ const SignupForm = () => {
         password: data.get('password'),
       });
 
-      console.log(res, '회원가입 성공');
+      // console.log(res, '회원가입 성공');
       if (res.status === 201 || res.data.success === true) {
-        console.log('회원가입 성공');
+        // console.log('회원가입 성공');
         navigate('/login');
       } else {
         console.error('회원가입 실패');
